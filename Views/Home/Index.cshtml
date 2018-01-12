@@ -1,0 +1,376 @@
+﻿@using WebApplication1.Models;
+@using WebApplication1.Code;
+@using System.Text;
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model WebApplication1.Models.BookRoom
+
+
+@*@if (TempData["message"] as string != null)
+    {
+        String message = TempData["message"] as string;
+
+        <intput hidden id="mess">@message</intput>
+        TempData["message"] = null;
+    }*@
+
+@if (TempData["HomeIndexError"] != null)
+{
+    <div class="modal fade" id="DateTimeError" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thông báo</h4>
+                </div>
+                <div class="modal-body">
+                    @switch ((HomeIndexError)TempData["HomeIndexError"])
+                    {
+                        case HomeIndexError.RoomEmpty:
+                            <p>Không còn phòng trống trong khoảng thời gian quý khách chọn.<br> Xin lỗi quý khách vì sự bất tiện này</p>
+                            break;
+                        case HomeIndexError.DateTimeIncorrect:
+                            <p>Ngày đến và ngày đi không hợp lệ hoặc không có phòng phù hợp. Mong bạn chọn lại</p>
+                            break;
+                        case HomeIndexError.NotSelectRoomYet:
+                            <p>Bạn chưa chọn phòng. Vui lòng chọn phòng.</p>
+                            break;
+                        case HomeIndexError.BookingRoomIsOk:
+                            <p> Đặt phòng thành công.<br> Hãy liên hệ với khách sạn để xác nhận phiếu đặt và đóng phí đặt phòng! <br> Thành thật cảm ơn.</p>
+                            break;
+                        case HomeIndexError.BookingRoomIsFail:
+                            <p>Đặt phòng thất bại, xin thử lại sau.</p>
+                            break;
+                        case HomeIndexError.CancelRoomIsOk:
+                            <p> Hủy đặt phòng thành công. Hi vọng bạn sẽ tin chọn khách sạn khi cần </p>
+                            break;
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@{
+    List<HangPhong1> rooms = TempData["hangphong"] as List<HangPhong1>;
+}
+
+@*<link rel="stylesheet" href="jquery-ui.min.css">
+    <script src="external/jquery/jquery.js"></script>
+    <script src="jquery-ui.min.js"></script>*@
+
+@*<script type="text/javascript" src="/Assets/admin/js/jquery-1.11.2.min.js"></script>*@      		<!-- jQuery -->
+
+<section class="container tm-home-section-1" id="more">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6">
+            <!-- Nav tabs -->
+            <div class="tm-home-box-1">
+                <ul class="nav nav-tabs tm-white-bg" role="tablist" id="hotelCarTabs">
+                    <li role="presentation" class="active">
+                        <a href="#hotel" aria-controls="hotel" role="tab" data-toggle="tab">Book Room</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active tm-white-bg" id="hotel">
+                        <div class="tm-search-box effect2">
+                            @using (Html.BeginForm("Index", "BookRoom", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+                                <div class="tm-form-inner">
+                                    <div class="form-group" id="asdasd">
+                                        <div class='input-group date' id='from-date'>
+                                            @Html.TextBoxFor(model => model.dateRent, new { @class = "form-control", @placeholder = "Check-in Date" })
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                        @*<div class="input-group date" id="datetimepicker1" onchange ="changeDate();" onselect="changeDate();">
+                                                @Html.TextBoxFor(model => model.dateRent, new { @class = "form-control", @placeholder = "Check-in Date" })
+                                                <span class="input-group-addon"  onchange ="changeDate();" onselect="changeDate();">
+                                                    <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>*@
+                                    </div>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='to-date'>
+                                            @Html.TextBoxFor(model => model.datePay, new { @class = "form-control", @placeholder = "Check-out Date" })
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                        @*<div class="input-group date" id="datetimepicker2">
+                                                @Html.TextBoxFor(model => model.datePay, new { @class = "form-control", @placeholder = "Check-out Date" })
+                                                <span class="input-group-addon">
+                                                    <span class="fa fa-calendar"></span>
+                                                </span>
+                                            </div>*@
+                                    </div>
+                                </div>
+                                <div class="form-group tm-yellow-gradient-bg text-center">
+                                    <button type="submit" class="tm-yellow-btn">Check Now</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            @if (rooms.Count >= 2)
+            {
+                String hinhanh1 = @"/Assets/admin/img/" + rooms[1].hinhanh;
+                String hinhanh2 = @"/Assets/admin/img/" + rooms[2].hinhanh;
+                <section class="col-md-4">
+                    <img src="@hinhanh1" alt="image" class="img-responsive" >
+                    <footer class="well">
+                        <div class="row">
+                            <div class="col-md-6 left-text">
+                                <h4>@rooms[1].hangphong</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <h3>
+                                    @rooms[1].giatiennow.ToString("#,##") VNĐ
+                                </h3>
+                                
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+
+                            <div class="col-md-6">
+                                @if(@rooms[1].giamgia!=0)
+                                {
+                                <strike>@rooms[1].giatien.ToString("#,##") VND</strike><b>&nbsp; @rooms[1].giamgia %</b>
+                                }
+                            </div>
+                            
+                        </div>
+                    </footer>
+                </section>
+                <section class="col-md-4">
+                    <img src="@hinhanh2" alt="image" class="img-responsive" style="width: 1000px; height: 210px;">
+                    <footer class="well">
+                        <div class="row">
+                            <div class="col-md-6 left-text">
+                                <h4>@rooms[2].hangphong</h4>
+                            </div>
+                            <div class="col-md-6">
+                                <h3>
+                                   @rooms[2].giatiennow.ToString("#,##") VNĐ
+                                </h3>
+
+                            </div>
+                            <div class="col-md-6">
+
+                            </div>
+
+                            <div class="col-md-6">
+                                @if (@rooms[2].giamgia != 0) { 
+                                <strike>@rooms[2].giatien.ToString("#,##") VND</strike><b>&nbsp;@rooms[2].giamgia %</b>
+                                }
+                            </div>
+
+                        </div>
+                    </footer>
+                </section>
+                <style>
+                    .new_tag_promotion {
+                        background-image: url(../Images/sale-icon.png);
+                        color: white;
+                        position: absolute;
+                        width: 50px;
+                        height: 50px;
+                        top: 0;
+                        right: auto;
+                        z-index: 1;
+                        text-align: center;
+                    }
+                    .percent_value {
+                        line-height: 50px;
+                        color: #FFF;
+                        font-size: 13px;
+                        font-weight: 700;
+                    }
+                    .well {
+                        border: none;
+                        border-radius: 0px;
+                        background-color: #e97262;
+                        font-weight: 700;
+                        color:white;
+                    }
+                </style>
+
+                
+                @*<div class="col-lg-4 col-md-4 col-sm-6">
+                    <div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-right">
+                        <img src="@hinhanh2" alt="image" class="img-responsive">
+                        <a href="">
+                            <div class="tm-red-gradient-bg tm-city-price-container">
+                                <span>@rooms[2].hangphong</span>
+                                <span>@rooms[2].giatien.ToString("#,##") VND</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>*@
+            }
+    </div>
+</section>
+<!-- white bg -->
+<section class="tm-white-bg section-padding-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="tm-section-header section-margin-top">
+                <div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+                <div class="col-lg-4 col-md-6 col-sm-6"><h2 class="tm-section-title">Các loại phòng khách sạn phục vụ</h2></div>
+                <div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+            </div>
+            @{
+                int i = 0;
+                Random r = new Random();
+                int random = 0;
+                string[] colors = new string[] { "yellow", "green", "red", "blue", "purple", "orange" };
+                foreach (HangPhong1 hp in rooms)
+                {
+                    i++;
+                    random = r.Next(0, colors.Length);
+                    String hinhanh = "/Assets/admin/img/" + hp.hinhanh;
+                   
+                        <section class="col-md-4" >
+                            <img src="@hinhanh" alt="image" class="img-responsive" >
+                            <footer class="well tm-@colors[random]-gradient-bg">
+                                <div class="row">
+                                    <div class="col-md-6 left-text">
+                                        <h4>@hp.hangphong</h4>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h3>
+                                            @hp.giatiennow.ToString("#,##") VND
+                                        </h3>
+
+                                    </div>
+                                    <div class="col-md-6">
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                       @if (hp.giamgia != 0)
+                                        {
+                                        <strike>@hp.giatien.ToString("#,##") VND</strike><b>&nbsp;@hp.giamgia%</b>
+                                        }
+                                    </div>
+
+                                </div>
+                            </footer>
+                        </section>
+                    }
+                        @*<div class="col-lg-4">
+
+                            <div class="tm-home-box-1 tm-home-box-1-2 tm-home-box-1-center">
+                                <img src="@hinhanh" alt="image" class="img-responsive">
+                                <a>
+                                    <div class="tm-@colors[random]-gradient-bg tm-city-price-container">
+                                        <span>@rooms[1].hangphong</span>
+                                        <span>@rooms[1].giatien.ToString("#,##") VND</span>
+                                    </div>
+
+                                </a>
+                            </div>
+                            <div class="tm-home-box-3">
+                                    <div class="tm-home-box-3-img-container">
+                                        <img src="@hinhanh" alt="image" class="img-responsive" style="width: 250px; height:225px">
+                                    </div>
+                                    <div class="tm-home-box-3-info">
+                                        <h3 style="color: darkred; padding:25% ; height:140px"><strong> @hp.hangphong</strong></h3>
+                                        <div class="tm-home-box-2-container">
+                                            <a href="" class="tm-home-box-2-link"><i class="fa fa-heart tm-home-box-2-icon border-right"></i></a>
+                                            <a href="" class="tm-home-box-2-link"><span class="tm-home-box-2-description box-3">@hp.giatien.ToString("#,##") VND</span></a>
+                                            <a href="" class="tm-home-box-2-link"><i class="fa fa-edit tm-home-box-2-icon border-left"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>*@
+                    }
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script>
+        //function changeDate() {
+        //    $("#datetimepicker2").datetimepicker({ minDate: $("#datetimepicker1").find('input').val() });
+        //}
+
+        $(function () {
+            var mess = $('#mess').text();
+            if (mess != "") {
+                alert(mess);
+            }
+
+            //$.datepicker.setDefault({
+            //    dateFormat: 'dd/MM/yyyy'
+            //});
+            //$("#datetimepicker1").datetimepicker({
+            //    onSelect: function (selectedDate) {
+            //        $("#datetimepicker2").datetimepicker({ minDate: selectedDate });
+            //    }
+            //});
+            //$('#datetimepicker2').datetimepicker('option', 'onSelect', function () { $("#datetimepicker1").datetimepicker({ maxDate: selectedDate }); });
+            //$("#datetimepicker1").datetimepicker({
+            //}).on("onSelect", function (e) {
+            //    alert("Working");
+            //});
+            //$("#datetimepicker2").datetimepicker({
+            //}).on("changeDate", function (e) {
+            //    alert("Working");
+            //});
+            //$("#datetimepicker2").datetimepicker({
+            //        onSelect: function (selectedDate) {
+            //            alert("Working");
+            //            $("#datetimepicker1").datetimepicker({ maxDate: selectedDate });
+            //        }
+            //    });
+        });
+    </script>
+@if (TempData["message"] as string != null)
+{
+    String mess = TempData["message"] as string;
+    <script>
+        bootbox.alert("@mess");
+    </script>
+}
+
+    <script type="text/javascript">
+        $(function () {
+            var date = new Date();
+            date.setDate(date.getDate() + 1);
+            $('#from-date').datetimepicker({
+                useCurrent: false,
+                minDate: date
+            });
+            $('#to-date').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                minDate: date
+            });
+            $("#from-date").on("dp.change", function (e) {
+                $('#to-date').data("DateTimePicker").minDate(e.date);
+            });
+            $("#to-date").on("dp.change", function (e) {
+                $('#from-date').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+        $('#DateTimeError').modal('show');
+    </script>
+}
+

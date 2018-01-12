@@ -1,0 +1,105 @@
+﻿@using System.Web.Mvc;
+@using System.Web;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var listRoom = TempData["ListHangPhong"] as List<WebQL.Areas.Admin.Models.Room>;
+}
+
+@{
+    var tongtien = 0;
+    var soluongphong = 0;
+    foreach (var i in listRoom)
+    {
+        tongtien += i.giatien * i.soluong;
+        soluongphong += i.soluong;
+    }
+    var dateRoom = WebQL.Areas.Admin.Code.SessionHelper.GetDateSession() as WebApplication1.Models.BookRoom;
+
+    if (soluongphong <= 0)
+    {
+        @*@{ Response.Redirect("/Home/Index");}*@
+    }
+    else
+    {
+        <section class="tm-white-bg section-padding-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="tm-section-header section-margin-top">
+                        <div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+                        <div class="col-lg-4 col-md-6 col-sm-6"><h2 class="tm-section-title">Danh sách phòng đã đặt</h2></div>
+                        <div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Testimonial -->
+                    <div class="col-lg-12">
+                        <div class="tm-what-we-do-right">
+                            @using (Html.BeginForm("InsertCMND", "PayRoom", FormMethod.Post, new { id = "myform" }))
+                            {
+                                for (int i = 0; i < listRoom.Count; i++)
+                                {
+                                    String hinhanh = @"/Assets/admin/img/" + listRoom[i].hinhanh;
+
+                                        <div class="tm-about-box-2 margin-bottom-30 tessss" id=@listRoom[i].hangphong>
+                                        <img src=@hinhanh alt="image" height=225 width=250 class="tm-about-box-2-img">
+                                            <div class="tm-about-box-2-text">
+                                                <h3 class="tm-about-box-2-title">Hạng phòng: @listRoom[i].hangphongname</h3>
+                                                <p class="tm-about-box-2-description gray-text">Số lượng: @listRoom[i].soluong</p>
+                                                <p class="tm-about-box-2-description gray-text">Giá: @listRoom[i].giatien.ToString("#,##") VNĐ</p>                                            
+                                            </div>
+                                        </div>
+                                }
+                            }
+                        </div>
+                        <div class="tm-testimonials-box">
+                            <h3 class="tm-testimonials-title">Thông tin đặt phòng</h3>
+                            <div class="tm-testimonials-content">
+                                <p><b>Số phòng đã đặt:</b><br /> @soluongphong</p>
+                                <input value=@soluongphong id="sophong" readonly  type="hidden">
+                                <p><b>Tổng tiền:</b><br /> @tongtien.ToString("#,##") VNĐ/Ngày</p>
+                                <input value=@tongtien id="tongtien" readonly type="hidden">
+                                <p><b>Ngày đến:</b> <br /> @dateRoom.dateRent</p>
+                                <input value=@dateRoom.dateRent id="ngayden" readonly type="hidden">
+                                <p><b>Ngày đi:</b><br /> @dateRoom.datePay</p>
+                                <input value=@dateRoom.datePay id="ngaydi" readonly type="hidden">
+                                <div class="text-center">
+                                    <input type="submit" class="juz-button btn-success" form="myform" value="Xác nhận">
+                                </div>
+                                
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+                <script>
+                    function pageLoad() {
+                        var div = document.getElementsByClassName('tessss');
+                        if (div.length <= 0) {
+                            document.getElementById('btnXacNhan').disabled = true;
+                        }
+                    }
+                    window.onload = pageLoad;
+                    function deleteRow(btndel, giatien) {
+                        var div = document.getElementById(btndel);
+                        div.style.display = 'none';
+                        //div.parentNode.removeChild(div);
+                        document.getElementById(btndel * 1000).checked = true;
+                        var x = document.getElementsByClassName("tessss");
+                        var tempTT = document.getElementById("tongtien").value;
+                        var tempSP = document.getElementById("sophong").value;
+                        document.getElementById('sophong').value = tempSP - 1;
+                        document.getElementById('tongtien').value = tempTT - giatien;
+                        if (tempSP == 1) {
+                            document.getElementById('btnXacNhan').disabled = true;
+                            //document.getElementById('btnXacNhan').value = 'back';
+                        }
+                    }
+                </script>
+    }
+}

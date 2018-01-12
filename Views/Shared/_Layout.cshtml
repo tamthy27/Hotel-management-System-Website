@@ -1,0 +1,185 @@
+﻿@{
+    ViewBag.Title = "_Layout";
+}
+
+<!DOCTYPE html>
+<html @*lang="en"*@>
+<head>
+    <meta charset="utf-8">
+    @*<meta http-equiv="X-UA-Compatible" content="IE=edge">*@
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hotel PTIT</title>
+    <!--
+    Holiday Template
+    http://www.templatemo.com/tm-475-holiday
+    -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,700' rel='stylesheet' type='text/css'>
+    <link href="/Assets/admin/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/Assets/admin/css/bootstrap.min.css" rel="stylesheet">
+    @*<link href="~/Assets/admin/css/StyleSheet1.css" rel="stylesheet">*@
+    <link href="/Assets/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/Assets/admin/css/flexslider.css" rel="stylesheet">
+    <link href="/Assets/admin/css/templatemo-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Lib/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css" />
+  
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!--<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>-->
+    <!--<script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js" integrity="sha256-xI/qyl9vpwWFOXz7+x/9WkG5j/SVnSw21viy8fWwbeE=" crossorigin="anonymous"></script>-->
+  
+</head>
+<body class="tm-gray-bg">
+    <!-- Header -->
+    @{Html.RenderAction("MainMenu", "Home");}
+
+    <!-- Banner -->
+    <section class="tm-banner">
+        <!-- Flexslider -->
+        <div class="flexslider flexslider-banner">
+            <ul class="slides">
+                <li>
+                    <div class="tm-banner-inner">
+                        <h1 class="tm-banner-title">Find <span class="tm-yellow-text">The Best</span> Place</h1>
+                        <p class="tm-banner-subtitle">For Your Holidays</p>
+                    </div>
+                    <img src="/Assets/admin/img/khach-san-riverside-quang-binh-8.jpg" alt="Image" />
+                </li>
+                <li>
+                    <div class="tm-banner-inner">
+                        <h1 class="tm-banner-title">Want <span class="tm-yellow-text">to</span> Relax?</h1>
+                        <p class="tm-banner-subtitle">Wonderful Destinations</p>
+                    </div>
+                    <img src="/Assets/admin/img/banner-2.jpg" alt="Image" />
+                </li>
+                <li>
+                    <div class="tm-banner-inner">
+                        <h1 class="tm-banner-title"> Want <span class="tm-yellow-text">to</span> Enjoy life</h1>
+                        <p class="tm-banner-subtitle"> Perfect Hotel</p>
+                    </div>
+                    <img src="/Assets/admin/img/banner-3.jpg" alt="Image" />
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    @RenderBody()
+    <footer class="tm-black-bg">
+        <div class="container">
+            <div class="row">
+                <p class="tm-copyright-text">
+                    Copyright &copy; 2084 PTIT Hotel System
+
+                    | Designed by <a rel="nofollow" href="http://hcm.ptit.edu.vn/" target="_parent">ptithcm</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Lib/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/Assets/admin/js/moment.js"></script>							<!-- moment.js -->
+    <script type="text/javascript" src="/Assets/admin/js/bootstrap.min.js"></script>					<!-- bootstrap js -->
+    <script type="text/javascript" src="/Assets/admin/js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="~/Lib/bootbox.min.js"></script>
+    <!--
+        <script src="/Assets/admin/js/froogaloop.js"></script>
+        <script src="/Assets/admin/js/jquery.fitvid.js"></script>
+    -->
+    <script type="text/javascript" src="/Assets/admin/js/templatemo-script.js"></script>      		<!-- Templatemo Script -->
+    <script>
+        // HTML document is loaded. DOM is ready.
+        //$(function () {
+
+        //    $('#hotelCarTabs a').click(function (e) {
+        //        e.preventDefault()
+        //        $(this).tab('show')
+        //    })
+        //    var date = new Date();
+        //    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        //    $('.date').datetimepicker({
+        //        format: 'MM/DD/YYYY',
+        //        minDate: today
+        //    });
+        //    $('.date-time').datetimepicker();
+
+        //    // https://css-tricks.com/snippets/jquery/smooth-scrolling/
+        //    $('a[href*=#]:not([href=#])').click(function () {
+        //        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+        //            var target = $(this.hash);
+        //            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+        //            if (target.length) {
+        //                $('html,body').animate({
+        //                    scrollTop: target.offset().top
+        //                }, 1000);
+        //                return false;
+        //            }
+        //        }
+        //    });
+        //});
+
+        // Load Flexslider when everything is loaded.
+        $(window).load(function () {
+            // Vimeo API nonsense
+
+            /*
+                          var player = document.getElementById('player_1');
+                          $f(player).addEvent('ready', ready);
+
+                          function addEvent(element, eventName, callback) {
+                            if (element.addEventListener) {
+                              element.addEventListener(eventName, callback, false)
+                            } else {
+                              element.attachEvent(eventName, callback, false);
+                            }
+                          }
+
+                          function ready(player_id) {
+                            var froogaloop = $f(player_id);
+                            froogaloop.addEvent('play', function(data) {
+                              $('.flexslider').flexslider("pause");
+                            });
+                            froogaloop.addEvent('pause', function(data) {
+                              $('.flexslider').flexslider("play");
+                            });
+                          }
+            */
+
+
+
+            // Call fitVid before FlexSlider initializes, so the proper initial height can be retrieved.
+            /*
+
+                          $(".flexslider")
+                            .fitVids()
+                            .flexslider({
+                              animation: "slide",
+                              useCSS: false,
+                              animationLoop: false,
+                              smoothHeight: true,
+                              controlNav: false,
+                              before: function(slider){
+                                $f(player).api('pause');
+                              }
+                          });
+            */
+
+
+
+
+            //	For images only
+            $('.flexslider').flexslider({
+                controlNav: false
+            });
+
+       
+        });
+         
+    </script>
+    @RenderSection("Scripts", false)
+</body>
+</html>

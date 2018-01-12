@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "_Layout";
+}
+
+<!DOCTYPE html>
+<html @*lang="en"*@>
+<head>
+    <meta charset="utf-8">
+    @*<meta http-equiv="X-UA-Compatible" content="IE=edge">*@
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hotel PTIT</title>
+    <!--
+    Holiday Template
+    http://www.templatemo.com/tm-475-holiday
+    -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,700' rel='stylesheet' type='text/css'>
+    <link href="/Assets/admin/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/Assets/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Assets/admin/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="/Assets/admin/css/flexslider.css" rel="stylesheet">
+    <link href="/Assets/admin/css/templatemo-style.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/Lib/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css" />
+</head>
+<body class="tm-gray-bg">
+    <!-- Header -->
+    @{Html.RenderAction("MainMenu", "Home");}
+
+    @RenderBody()
+    <footer class="tm-black-bg">
+        <div class="container">
+            <div class="row">
+                <p class="tm-copyright-text">
+                    Copyright &copy; 2084 PTIT Hotel System
+
+                    | Designed by <a rel="nofollow" href="http://hcm.ptit.edu.vn/" target="_parent">ptithcm</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Lib/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/Assets/admin/js/moment.js"></script>							<!-- moment.js -->
+    <script type="text/javascript" src="/Assets/admin/js/bootstrap.min.js"></script>					<!-- bootstrap js -->
+    <script type="text/javascript" src="/Assets/admin/js/jquery.flexslider-min.js"></script>
+    <script type="text/javascript" src="~/Lib/bootbox.min.js"></script>
+    <!--
+        <script src="/Assets/admin/js/froogaloop.js"></script>
+        <script src="/Assets/admin/js/jquery.fitvid.js"></script>
+    -->
+    <script type="text/javascript" src="/Assets/admin/js/templatemo-script.js"></script>      		<!-- Templatemo Script -->
+    <script>
+        // Load Flexslider when everything is loaded.
+        $(window).load(function () {
+            //	For images only
+            $('.flexslider').flexslider({
+                controlNav: false
+            });
+
+
+        });
+
+    </script>
+    @RenderSection("Scripts", false)
+</body>
+</html>

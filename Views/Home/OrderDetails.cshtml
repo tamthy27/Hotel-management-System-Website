@@ -1,0 +1,131 @@
+﻿@using WebQL.Areas.Admin.Models
+@using WebApplication1.Models
+@using System.Web.Mvc;
+@using System.Web;
+
+
+@{
+    ViewBag.Title = "OrderDetails";
+    Layout = "~/Views/Shared/_CustomLayout.cshtml";
+    List<Room> listRoom = ViewBag.RoomList;
+    OrderListModel orderInfo = ViewBag.OrderInfo;
+
+}
+
+
+@{
+
+    var soluongphong = orderInfo.SoPhongDaDat;
+
+    var dateRoom = WebQL.Areas.Admin.Code.SessionHelper.GetDateSession() as WebApplication1.Models.BookRoom;
+
+    if (soluongphong <= 0)
+    {
+        @*@{ Response.Redirect("/Home/Index");}*@
+    }
+    else
+    {
+        <section class="tm-white-bg section-padding-bottom">
+            <div class="container">
+                <div class="row">
+                    <div class="tm-section-header section-margin-top">
+                        <div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+                        <div class="col-lg-4 col-md-6 col-sm-6"><h2 class="tm-section-title">Danh sách phòng đã đặt</h2></div>
+                        <div class="col-lg-4 col-md-3 col-sm-3"><hr></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- Testimonial -->
+                    <div class="col-lg-12">
+                        <div class="tm-what-we-do-right">
+                            @for (int i = 0; i < listRoom.Count; i++)
+                            {
+                                String hinhanh = @"/Assets/admin/img/" + listRoom[i].hinhanh;
+
+                                <div class="tm-about-box-2 margin-bottom-30 tessss" id=@listRoom[i].hangphong>
+                                    <img src=@hinhanh alt="image" height=225 width=250 class="tm-about-box-2-img">
+                                    <div class="tm-about-box-2-text">
+                                        <h3 class="tm-about-box-2-title">Hạng phòng: @listRoom[i].hangphongname</h3>
+                                        <p class="tm-about-box-2-description gray-text">Số lượng: @listRoom[i].soluong</p>
+                                        <p class="tm-about-box-2-description gray-text">Giá: @listRoom[i].giatien.ToString("#,##") VNĐ</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="tm-testimonials-box">
+                            <h3 class="tm-testimonials-title">Thông tin đặt phòng</h3>
+                            <div class="tm-testimonials-content">
+                                <p><b>Số phòng đã đặt:</b><br /> @orderInfo.SoPhongDaDat</p>
+                                <input value=@orderInfo.SoPhongDaDat id="sophong" readonly type="hidden">
+                                <p><b>Tiền cọc:</b><br /> @orderInfo.TienCoc VNĐ</p>
+                                <input value=@orderInfo.TienCoc id="tongtien" readonly type="hidden">
+                                <p><b>Ngày đặt:</b> <br /> @orderInfo.NgayDat</p>
+                                <input value=@orderInfo.NgayDat id="ngayden" readonly type="hidden">
+                                <p><b>Ngày đến:</b> <br /> @orderInfo.NgayDen</p>
+                                <input value=@orderInfo.NgayDen id="ngayden" readonly type="hidden">
+                                <p><b>Ngày đi:</b><br /> @orderInfo.NgayDi</p>
+                                <input value=@orderInfo.NgayDi id="ngaydi" readonly type="hidden">
+                                <p><b>Trạng thái phiếu đặt:</b> <br /> @orderInfo.TrangThaiPhieuDat</p>
+                                <div class="text-center">
+                                    @switch (orderInfo.TrangThaiPhieuDat.Trim())
+                                    {
+                                        case "Chưa xác nhận":
+                                            <a class="juz-button btn-danger" href="/huy-phieu-dat/@orderInfo.MAPhieuDat">Hủy</a>
+                                            break;
+                                        case "Xác nhận":
+                                            <a class="juz-button btn-danger" href="/huy-phieu-dat/@orderInfo.MAPhieuDat">Hủy</a>
+                                            break;
+                                        case "Hủy":
+
+                                            break;
+                                        case "Gửi tiền":
+                                            <a class="juz-button btn-danger" href="/huy-phieu-dat/@orderInfo.MAPhieuDat">Hủy</a>
+
+                                            break;
+                                        case "Hủy_trả phí":
+
+                                            break;
+                                        case "Nhận phòng":
+
+                                            break;
+                                    }
+                                    
+                                  
+                                </div>
+
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+                    function pageLoad() {
+                        var div = document.getElementsByClassName('tessss');
+                        if (div.length <= 0) {
+                            document.getElementById('btnXacNhan').disabled = true;
+                        }
+                    }
+                    window.onload = pageLoad;
+                    function deleteRow(btndel, giatien) {
+                        var div = document.getElementById(btndel);
+                        div.style.display = 'none';
+                        //div.parentNode.removeChild(div);
+                        document.getElementById(btndel * 1000).checked = true;
+                        var x = document.getElementsByClassName("tessss");
+                        var tempTT = document.getElementById("tongtien").value;
+                        var tempSP = document.getElementById("sophong").value;
+                        document.getElementById('sophong').value = tempSP - 1;
+                        document.getElementById('tongtien').value = tempTT - giatien;
+                        if (tempSP == 1) {
+                            document.getElementById('btnXacNhan').disabled = true;
+                            //document.getElementById('btnXacNhan').value = 'back';
+                        }
+                    }
+        </script>
+    }
+}

@@ -1,0 +1,217 @@
+﻿@model List<WebQL.Areas.Admin.Models.Room>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+            String datein = TempData["datein"].ToString();
+            String dateout = TempData["dateout"].ToString();
+}
+
+<!-- gray bg -->
+<section class="container tm-home-section-1" id="more">
+    <div class="section-margin-top">
+        <div class="row">
+            <div class="tm-section-header">
+                <div class="col-lg-4 col-md-4 col-sm-4"><hr></div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <h2 class="tm-section-title">Danh sách phòng trống</h2>
+                    <br />
+                    @*<h5> Ngày vào : @datein</h5>
+                        <h5> Ngày vào : @dateout</h5>*@
+                    <!-- Tab panes -->
+
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4"><hr></div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4"></div>
+
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active tm-white-bg" id="hotel">
+                        <div class="tm-search-box effect2">
+                            @using (Html.BeginForm("Index", "BookRoom", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.ValidationSummary(true, null, new { @class = "alert alert-danger" })
+                                <div class="tm-form-inner">
+                                    <div class="form-group">
+                                        <div class='input-group date' id='from-date'>
+                                            <input id="asdasd" name="dateRent" class="form-control" placeholder="Check-in Date" value="@datein" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class='input-group date' id='to-date'>
+                                            <input name="datePay" class="form-control" placeholder="Check-out Date" value="@dateout" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group tm-yellow-gradient-bg text-center">
+                                    <button type="submit" class="tm-yellow-btn">Check Now</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-4"></div>
+        </div>
+        @using (Html.BeginForm("RoomHasBeenOrdered", "PayRoom", FormMethod.Post))
+        {
+
+            if (Model.Count > 0)
+            {
+
+                for (int i = 0; i < Model.Count; i++)
+                {
+                    String hinhanh = @"/Assets/admin/img/" + Model[i].hinhanh;
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 checkHaveOrNot">
+                            <div class="tm-tours-box-1 room">
+                                <img src="@hinhanh" alt="image" class="img-responsive">
+                                <div class="tm-tours-box-1-info ">
+                                    <div class="tm-tours-box-1-info-left" style="padding:20px">
+                                        @Html.TextBoxFor(m => m[i].hangphong, new { @style = "display:none", @type = "hidden" })
+                                        @Html.TextBoxFor(m => m[i].hinhanh, new { @style = "display:none", @type = "hidden" })
+                                        <p class="text-uppercase margin-bottom-20 roomId" id="@Model[i].hangphong">Hạng phòng: @Model[i].hangphongname</p>
+                                        @Html.TextBoxFor(m => m[i].hangphongname, new { @style = "display:none" })
+                                        <p class="gray-text">Số lượng phòng trống: @Model[i].soluong</p>
+                                        <p class="gray-text">Đơn giá: @Model[i].giatien.ToString("#,##") VNĐ</p>
+                                        @Html.TextBoxFor(m => m[i].giatien, new { @style = "display:none", @type = "hidden" })
+                                    </div>
+                                    <div class="tm-tours-box-1-info-right">
+                                        <p class="gray-text tours-1-description">Phòng rộng, sạch sẽ thoáng mát, wifi truyền hình cáp đầy đủ.</p>
+                                    </div>
+
+                                    <div class="tm-tours-box-1-info" style="width:100%;padding:10px;">
+                                        @Html.DropDownListFor(m => m[i].soluong, new SelectList(Enumerable.Range(1, Model[i].soluong)), "Chọn phòng", new { @class = "form-control" })
+                                    </div>
+                                    @*<div class="tm-tours-box-1-link-left" style="color:black;width:60%">
+                                             @Html.TextBoxFor(m => m[i].soluong, new { @value = t, @type = "number", @min = 0, @max = Model[i].soluong })
+                                         </div>
+                                        <label class="tm-tours-box-1-link-right" style="width:40%">
+                                            @Html.TextBoxFor(m => m[i].giatien, new {  @type = "hidden", @min = 0, @max = Model[i].soluong })
+
+
+                                             @Model[i].giatien.ToString("#,##") VNĐ
+
+                                         </label>*@
+                                </div>
+                            </div>
+                        </div>
+                        @if (i < Model.Count - 1)
+                        {
+                            i++;
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 checkHaveOrNot">
+
+                                <div class="tm-tours-box-1 room">
+                                    <img src="@hinhanh" alt="image" class="img-responsive">
+                                    <div class="tm-tours-box-1-info">
+                                        <div class="tm-tours-box-1-info-left">
+                                            @Html.TextBoxFor(m => m[i].hangphong, new { @style = "display:none", @type = "hidden" })
+                                            @Html.TextBoxFor(m => m[i].hinhanh, new { @style = "display:none", @type = "hidden" })
+
+                                            <p class="text-uppercase margin-bottom-20 roomId" id="@Model[i].hangphong">Hạng phòng: @Model[i].hangphongname</p>
+                                            @Html.TextBoxFor(m => m[i].hangphongname, new { @style = "display:none" })
+
+
+                                            <p class="gray-text">Số lượng phòng trống: @Model[i].soluong</p>
+                                            <p class="gray-text">Đơn giá: @Model[i].giatien.ToString("#,##") VNĐ</p>
+                                            @Html.TextBoxFor(m => m[i].giatien, new { @style = "display:none", @type = "hidden" })
+                                        </div>
+                                        <div class="tm-tours-box-1-info-right">
+                                            <p class="gray-text tours-1-description">Phòng rộng, sạch sẽ thoáng mát, wifi truyền hình cáp đầy đủ.</p>
+                                        </div>
+                                        @*<div class="tm-tours-box-1-link-left" style="color:black;width:60%">
+                                                @Html.TextBoxFor(m => m[i].soluong, new { @type = "number", @min = 0, @max = Model[i].soluong, @value = t })
+                                            </div>
+                                            <label class="tm-tours-box-1-link-right" style="width:40%">
+                                                @Html.TextBoxFor(m => m[i].giatien, new { @type = "hidden", @min = 0, @max = Model[i].soluong })
+
+                                                @Model[i].giatien.ToString("#,##") VNĐ
+                                            </label>*@
+                                        <div class="tm-tours-box-1-info" style="width:100%;padding:10px;">
+                                            @Html.DropDownListFor(m => m[i].soluong, new SelectList(Enumerable.Range(1, Model[i].soluong)), "Chọn phòng", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                <div style="text-align: center">
+                    <button id="DatPhong" type="submit" name="submit" class="juz-button">Đặt phòng</button>
+                </div>
+            }
+        }
+    </div>
+</section>
+@section Scripts{
+    <script type="text/javascript">
+         //function pageLoad() {
+         //    var div = document.getElementsByClassName('checkHaveOrNot');
+         //    if (div.length <= 0) {
+         //        document.getElementById('DatPhong').disabled = true;
+         //    }
+         //}
+         @*window.onload = pageLoad;
+         $(document).ready(function () {
+             $('#DatPhong').on('click', function () {
+                 getValue();
+             })
+         })
+         function getValue() {
+             var $room = $('.room');
+             var array = [];
+             for (var i = 0; i < $room.length; i++) {
+                 var id = $($room[i]).find('.roomId').attr('id');
+                 var number = parseInt($($room[i]).find('select').find(":selected").val());
+                 var object = { hangphong: id, soluong: number };
+                 array.push(object);
+             }
+             var model = JSON.stringify(array);
+             console.log(model);
+             $.ajax({
+                 url: "@Url.Action("TEMP", "PayForm")",
+                 data: model,
+                 type: 'POST',
+                 contentType: 'application/json',
+                 dataType: 'json'
+             }).done(function () {
+                 alert('a');
+             }).fail(function () {
+                 console.log("false");
+             })
+         }*@
+
+        $(function () {
+            var date = new Date();
+            date.setDate(date.getDate() + 1);
+            $('#from-date').datetimepicker({
+                useCurrent: false,
+                minDate: date
+            });
+            $('#to-date').datetimepicker({
+                useCurrent: false, //Important! See issue #1075
+                minDate: date
+            });
+            $("#from-date").on("dp.change", function (e) {
+                $('#to-date').data("DateTimePicker").minDate(e.date);
+            });
+            $("#to-date").on("dp.change", function (e) {
+                $('#from-date').data("DateTimePicker").maxDate(e.date);
+            });
+        });
+        $('#DateTimeError').modal('show');
+    </script>
+
+}
+

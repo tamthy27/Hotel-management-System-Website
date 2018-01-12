@@ -1,0 +1,58 @@
+﻿@model WebQL.Areas.Admin.Models.InsertCMND
+
+@{
+    ViewBag.Title = "InsertCMND";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="container tm-home-section-1" id="more">
+    <div class="section-margin-top">
+        <div class="row">
+            <div class="tm-section-header">
+                <div class="col-lg-3 col-md-3 col-sm-3"><hr></div>
+                <div class="col-lg-6 col-md-6 col-sm-6"><h2 class="tm-section-title">Xác nhận thông tin</h2></div>
+                <div class="col-lg-3 col-md-3 col-sm-3"><hr></div>
+            </div>
+        </div>
+        <div class="container col-sm-3 col-lg-offset-4">
+            @using (Html.BeginForm("InsertCMND", "PayRoom", FormMethod.Post))
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    <label>Vui lòng nhập CMND</label>
+                    @Html.TextBoxFor(m => m.idCard, new { @class = "form-control CMND", @placeholder = "Nhập số CMND" , @maxlength =15})
+                    @Html.ValidationMessageFor(m => m.idCard, "", new { @class = "text-danger"})
+                    @*<input type="text" id="cmnd" placeholder="Nhập số CMND" />*@
+                </div>
+                @*<div class="form-group">
+                    <input onclick="ClickKoTK();" type="radio" name="selection" checked id="chuacotk" /><label>   Đặt phòng không cần tài khoản</label>
+                </div>*@            
+                <div class="form-group">
+                    <input type="submit" value="Xác nhận" />
+                </div>
+
+            }
+        </div>
+    </div>
+</section>
+<script>
+    $('.CMND').attr('minlength','10');
+    $('.CMND').attr('maxlength','15');
+    $('.CMND').keypress(function(event)
+    {
+        return event.charCode >=47 && event.charCode<=58;
+    });
+    </script>
+
+<script type="text/javascript">
+    function ClickCoTK() {
+        document.getElementById('nhappass').disabled = false;
+        document.getElementById('nhappass').readonly = false;
+        document.getElementById('account').checked = true;
+    }
+    function ClickKoTK() {
+        document.getElementById('nhappass').disabled = true;
+        document.getElementById('nhappass').readonly = true;
+        document.getElementById('account').checked = false;
+    }
+ 
+</script>
